@@ -1,0 +1,527 @@
+<html>
+
+<head>
+    <title>clock.html</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-git.js"></script>
+
+
+    <style type="text/css">
+        * {
+            user-select: none;
+        }
+
+        [title2] {
+            position: relative;
+        }
+
+        [title2]:after {
+            content: attr(title2);
+            position: absolute;
+            left: -1em;
+            top: 100%;
+            background-color: #777;
+            width: max-content;
+            color: white;
+            opacity: 0;
+            padding: 0 3px
+        }
+
+        [title2]:hover:after,
+        [title2]:active:after {
+            opacity: 1;
+        }
+
+        ::selection {
+            color: #777;
+            background: #777;
+        }
+
+        body {
+            background: black;
+            color: white;
+            overflow: hidden;
+        }
+
+        div {
+            border-radius: 8px;
+            height: 30px;
+            line-height: 30px;
+        }
+
+        b {}
+
+        i {
+            font-style: normal;
+        }
+
+        u {
+            text-decoration: none
+        }
+
+        #outer {
+            border: 1px solid #111;
+            background-color: rgba(139, 0, 0, 0.5);
+            background-image: repeating-linear-gradient(-45deg, transparent, transparent 1.5px, rgba(0, 0, 0, 1) 3px, rgba(0, 0, 0, 1) 4.5px);
+
+            zoom: .5;
+            width: 200px;
+            margin: 0;
+        }
+
+        #inner {
+            background-color: rgba(139, 0, 0, 0.5);
+            background-image: repeating-linear-gradient(45deg, transparent, transparent 1.5px, rgba(255, 255, 255, 0.1) 3px, rgba(255, 255, 255, 0.1) 4.5px);
+            text-align: center;
+            z-index: 100;
+            position: relative;
+            font-family: monospace;
+            font-size: 30px;
+            line-height: 35px;
+            border-right: 1.8px solid #999;
+            /*-webkit-text-stroke: 2px rgb(33, 33, 33);*/
+            font-weight: bold;
+            white-space: pre;
+        }
+
+        #inner::after {
+            content: '';
+            position: absolute;
+            width: 17px;
+            height: 30px;
+            right: -1px;
+            top: 0;
+            border-radius: 34px;
+            border-right: 1.8px solid #999;
+            display: none;
+        }
+
+        div i,
+        div u {
+            display: none
+        }
+
+        #inner.hover i,
+        #inner.hover u {
+            display: inline;
+            position: absolute;
+        }
+
+        #inner u {
+            padding-left: 1.55em;
+        }
+
+        #inner a {
+            margin: -2px;
+        }
+
+        ul {
+            margin: -30px 0 0 0;
+            padding: 0;
+            z-index: 0;
+        }
+
+        ul li {
+            list-style: none;
+            margin: 0px 0 0 0;
+            height: 30px;
+            margin-left: -0.5px;
+            margin-right: -0.5px;
+            border-left: 1px solid #eee;
+            padding: 0;
+            float: left;
+            width: 8.33%;
+        }
+
+        ul li:nth-child(3n+1) {
+            margin: 0;
+            margin-left: -3px;
+            margin-right: -3px;
+            border-left: 6px solid #000;
+            height: 30px;
+        }
+
+        ul li:first-child {
+            border-left: none;
+            margin-left: 0;
+            margin-right: 0;
+        }
+
+        .five {}
+
+        .ten {}
+
+        .five a {
+            display: block;
+            width: 6px;
+            border-top: 1px solid #eee;
+            margin: 12px 0 0 -3.5px;
+        }
+
+        #color {
+            margin-top: 10px;
+            float: left;
+            clear: both;
+        }
+
+        #default-color,
+        #defaults {
+            float: right;
+            margin: 12px 24px 0 10px;
+        }
+
+        #defaults {
+            margin-left: -14px;
+        }
+
+        #default-color strong {
+            transform: rotate(-339deg);
+            display: inline-block;
+            font-weight: bold
+        }
+
+        #early-bird {
+            float: left;
+            margin: 15px 0 0 10px;
+        }
+
+        #time-slipper {
+            clear: both;
+            float: left;
+            width: 98%;
+            margin-top: 10px;
+        }
+
+        #color-pallette-selector {
+            background-color: #777;
+            clear: both;
+            float: left;
+            cursor: text;
+            margin-top: 5px;
+            position: relative;
+            border-radius: 0;
+            border: 4px solid #777;
+            user-select: text;
+        }
+
+        #color-pallette-selector b {
+            width: 0.069%;
+            display: block;
+            float: left;
+            color: #777;
+            user-select: text;
+        }
+
+        #patch {
+            position: absolute;
+            width: 29px;
+            height: 38px;
+            background: black;
+            border-radius: 0;
+            top: -4px;
+            right: -12px;
+            border-left: 4px solid #777;
+        }
+
+        #zoom {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            font-size: 30px
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="outer">
+
+        <div id="inner"></div>
+
+        <ul>
+            <li class=""><a></a></li>
+            <li class="five" style="visibility: hidden;"><a></a></li>
+            <li class="ten"><a></a></li>
+            <li style="border-left: 6px solid #111;" class="five">
+                <div style="
+                    border-left: 1px solid #eee;
+                    border-radius: 0;
+                    height: 40px;
+                    margin: -5px 0 0 -3.5px;
+                ">
+                    <a style="position: absolute; margin-top: 20px;"></a>
+                </div>
+            </li>
+            <li class="ten"><a></a></li>
+            <li class="five" style="visibility: hidden;"><a></a></li>
+            <li style="
+                height: 40px;
+                margin-top: -5px;
+                border-left: 6px solid #111;
+            ">
+                <div style="
+                    border-left: 1px solid #eee;
+                    border-radius: 0;
+                    height: 40px;
+                    margin: 0 0 0 -3.5px;
+                "></div>
+            </li>
+            <li class="five" style="visibility: hidden;"><a></a></li>
+            <li class="ten"><a></a></li>
+            <li style="border-left: 6px solid #111;" class="five">
+                <div style="
+                    border-left: 1px solid #eee;
+                    border-radius: 0;
+                    height: 40px;
+                    margin: -5px 0 0 -3.5px;
+                ">
+                    <a style="position: absolute; margin-top: 20px;"></a>
+                </div>
+            </li>
+            <li class="ten"><a></a></li>
+            <li class="five" style="visibility: hidden;"><a></a></li>
+        </ul>
+    </div>
+
+    <input type="color" id="color" value="#8B0000" />
+    <button id="defaults">Defaults</button>
+    <button id="default-color"><strong>&#8635;</strong> Refresh</button>
+
+    <input type="range" min="1" max="3" step="1" value="2" id="early-bird" />
+
+    <input type="range" min="0" max="1440" step="1" class="not-initialized" id="time-slipper" />
+
+    <script type="text/javascript">
+
+        $(() => {
+
+            window.colorPallette = new Array(1441);
+
+            for (var i = 0; i <= 1441; i++) {
+                colorPallette[i] = '#8B0000'
+            }
+
+            if (localStorage.colorPallette && localStorage.colorPallette.length > 0) {
+                window.colorPallette = JSON.parse(localStorage.colorPallette)
+            }
+
+            localStorage.earlyBird = localStorage.earlyBird || -1;
+            $('#early-bird').val((+localStorage.earlyBird) + 2)
+
+            drawClock();
+            setInterval(drawClock, 500);
+            loadColor();
+            createColorPalletteSelectorUI();
+
+            function createColorPalletteSelectorUI() {
+                var html = ['<div id="color-pallette-selector">'];
+
+                for (var i = 0; i <= 1440; i++) {
+                    var hoursAndMinutes = minutesToHoursAndMinutes(i);
+                    hoursAndMinutes.h = hoursAndMinutes.h == 0 ? 12 : hoursAndMinutes.h;
+
+                    html.push(`<b title2="${hoursAndMinutes.h}:${pad(hoursAndMinutes.m, 2)}" style="background:${colorPallette[i]};color:${colorPallette[i]}">${i},</b>`);
+                }
+
+                html.push('<div id="patch"><b></b></div></div>');
+
+                $('body').append(html.join(''));
+            }
+
+            function setColorPallette(color, hour24From, minuteFrom, hour24To, minuteTo) {
+                var from = (hour24From * 60) + minuteFrom;
+                var to = (hour24To * 60) + minuteTo;
+
+                for (var i = from; i <= to; i++) {
+                    colorPallette[i] = color;
+                }
+            }
+
+            function saveColorPallette() {
+                localStorage['colorPallette'] = JSON.stringify(colorPallette);
+            }
+
+            var ulOpacity = 1;
+
+            $('#outer').click(() => {
+                $('#inner').toggleClass('hover');
+
+                if (ulOpacity) {
+                    ulOpacity = 0
+                    $('ul').css('opacity', 0);
+                }
+                else {
+                    ulOpacity = 1;
+                    $('ul').css('opacity', 1);
+                }
+            })
+
+            $('#color').on('input', () => {
+                var hexColor = $('#color').val();
+
+                changeColor(hexColor);
+                saveColor(hexColor);
+            })
+
+            var selection = '';
+
+            document.addEventListener('selectionchange', () => {
+                //leng > 0
+                selection = document.getSelection().toString() || selection;
+                //alert('length1:' + selection.length)
+            });
+
+            $('#color').on('blur', () => {
+                var hexColor = $('#color').val();
+                //alert('blurred')
+                //alert('length2:' + selection.length)
+
+                if (selection) {
+
+                    var timesSelected = selection.split(',');
+
+                    //selectorUI is not accurate, does not get last minute selected, so add it in
+                    timesSelected.pop();
+                    timesSelected.push(+timesSelected[timesSelected.length - 1] + 1);
+
+                    for (var i = 0; i < timesSelected.length; i++) {
+                        var time = timesSelected[i];
+
+                        colorPallette[+time] = hexColor;
+
+                        $(`#color-pallette-selector b:nth-child(${+time + 1})`).css({ 'background-color': hexColor, color: hexColor });
+                    }
+
+                    saveColorPallette();
+                }
+
+                window.getSelection().removeAllRanges();
+            })
+
+            $('#default-color').click(() => {
+                localStorage['clockMainColor'] = 0;
+                window.location.reload(false);
+            })
+
+            $('#defaults').click(() => {
+                confirm('Are you sure?') && (localStorage.clear(), window.location.reload(false));
+            })
+
+            $('#early-bird').on('input', () => {
+                localStorage.earlyBird = (+$('#early-bird').val()) - 2;
+            })
+
+            $('#time-slipper').on('input', () => {
+                $('#time-slipper').addClass('is-active');
+
+                var timeInMinutes = $('#time-slipper').val();
+                var hoursAndMinutes = minutesToHoursAndMinutes(timeInMinutes);
+
+                now.setHours(hoursAndMinutes.h, hoursAndMinutes.m, 0);
+                drawTime();
+            })
+
+            function changeColor(color) {
+                var rgbColor = hexToRgb(color);
+
+                var css = {
+                    'background-color': `rgba(${rgbColor.r}, ${rgbColor.g}, ${rgbColor.b}, 0.5)`
+                };
+
+                $('#outer').css(css);
+                $('#inner').css(css);
+            }
+
+            function saveColor(color) {
+                localStorage['clockMainColor'] = color;
+            }
+
+            function loadColor() {
+                if (localStorage['clockMainColor'] != '0') {
+                    changeColor(localStorage['clockMainColor'] || '#8B0000');
+
+                    $('#color').val(localStorage['clockMainColor'] || '#8B0000');
+                }
+            }
+
+            function drawClock() {
+                if (!$('#time-slipper').hasClass('is-active')) {
+                    now = new Date();
+                }
+
+                drawTime();
+            }
+
+            var now = new Date();
+
+            function hour24ToHour12(hour24) {
+                var hour12 = hour24 % 12;
+                hour12 = (hour12 == 0) ? 12 : hour12;
+
+                return hour12;
+            }
+
+            function drawTime() {
+                var hour24 = now.getHours();
+                var minute = now.getMinutes();
+                var second = now.getSeconds();
+
+                var hour12 = hour24ToHour12(hour24);
+
+                //convert to seconds
+                var currentMinuteInSeconds = (minute * 60) + second;
+                var totalSecondsInHour = 60 * 60;
+
+                var currentMinuteAsPercentOfHour = (currentMinuteInSeconds / totalSecondsInHour) * 100;
+
+                $('#inner')
+                    .html(`<b>${hour12}</b><i><a>:</a>${pad(minute, 2)}</i><u><a>:</a>${pad(second, 2)}</u>`)
+                    .width(`${currentMinuteAsPercentOfHour + (+localStorage.earlyBird)}%`)
+                    ;
+
+                var minutesAndHoursAsMinutes = (hour24 * 60) + minute;
+
+                if (!$('#color').is(':focus')) {
+                    changeColor(colorPallette[minutesAndHoursAsMinutes]);
+                }
+
+
+                if ($('#time-slipper').hasClass('not-initialized')) {
+                    $('#time-slipper')
+                        .removeClass('not-initialized')
+                        .val(minutesAndHoursAsMinutes)
+                        ;
+                }
+            }
+
+            var maxMinutes = 24 * 60;//=1440
+
+            function minutesToHoursAndMinutes(minutes) {
+                var h = Math.floor(minutes / 60);
+                var m = minutes - (h * 60);
+
+                return { h, m };
+            }
+
+            function pad(num, size) {
+                num = num.toString();
+                while (num.length < size) num = "0" + num;
+                return num;
+            }
+
+            function hexToRgb(hex) {
+                var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+
+                return result ? {
+                    r: parseInt(result[1], 16),
+                    g: parseInt(result[2], 16),
+                    b: parseInt(result[3], 16)
+                } : null;
+            }
+        })
+
+    </script>
+</body>
+
+</html>
