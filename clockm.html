@@ -167,12 +167,8 @@
 
         #default-color,
         #defaults {
-            float: right;
-            margin: 12px 24px 0 10px;
-        }
-
-        #defaults {
-            margin-left: -14px;
+            float: left;
+            margin: 12px 0 0 10px;
         }
 
         #default-color strong {
@@ -184,6 +180,7 @@
         #early-bird {
             float: left;
             margin: 15px 0 0 10px;
+            width: 50px
         }
 
         #time-slipper {
@@ -285,10 +282,10 @@
     </div>
 
     <input type="color" id="color" value="#8B0000" />
-    <button id="defaults">Defaults</button>
-    <button id="default-color"><strong>&#8635;</strong> Refresh</button>
 
     <input type="range" min="1" max="3" step="1" value="2" id="early-bird" />
+    <button id="default-color"><strong>&#8635;</strong> Refresh</button>
+    <button id="defaults">Defaults</button>
 
     <input type="range" min="0" max="1440" step="1" class="not-initialized" id="time-slipper" />
 
